@@ -10,8 +10,10 @@ public class PlayerController : MonoBehaviour
         Normal = 0, TimeStop, Growing
     }
 
+    [SerializeField] float movementSpeed = 10;
     PlayerState ps = PlayerState.Normal;
     Rigidbody rb;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,27 +24,40 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C) && ps != PlayerState.TimeStop)
+        GetPlayerInput();
+    }
+
+
+    private void GetPlayerInput()
+    {
+        if (Input.GetKey(KeyCode.W))
         {
-            LightSpeed();
-            ps = PlayerState.Normal;
+            transform.Translate(transform.forward * movementSpeed * Time.unscaledDeltaTime);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            transform.Translate(-transform.forward * movementSpeed * Time.unscaledDeltaTime);
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Translate(transform.right * movementSpeed * Time.unscaledDeltaTime);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            transform.Translate(-transform.forward * movementSpeed * Time.unscaledDeltaTime);
+        }
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            StartCoroutine("WarpTime");
         }
     }
 
-    void LightSpeed()
+    IEnumerator WarpTime()
     {
-        Time.timeScale = 0f;
-        ps = PlayerState.TimeStop;
-        this.transform.position += new Vector3(20f, 0, 0);
+        Time.timeScale = .1f;
+        yield return new WaitForSecondsRealtime(5);
         Time.timeScale = 1f;
-    }
-
-    IEnumerator SlowPlayerDown()
-    {
-        while (rb.velocity.x > 10)
-        {
-            rb.velocity = rb.velocity * .5f * Time.unscaledDeltaTime;
-            yield return new WaitForSecondsRealtime(5);
-        }
     }
 }
