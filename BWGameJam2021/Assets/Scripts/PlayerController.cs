@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     {
         Time.timeScale = 0f;
         ps = PlayerState.TimeStop;
-        this.transform.position += new Vector3(20f, 0, 0) * Time.unscaledDeltaTime;
+        this.transform.position += new Vector3(20f, 0, 0);
         Time.timeScale = 1f;
     }
 

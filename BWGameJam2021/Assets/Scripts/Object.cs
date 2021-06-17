@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Collectible : MonoBehaviour
+public class Object : MonoBehaviour
 {
     private float radius;
     [SerializeField] float radiusSpeed, theta, thetaSpeed;
@@ -12,7 +12,7 @@ public class Collectible : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        radius = Vector2.Distance(this.gameObject.transform.position, player.transform.position);
+        radius = Vector3.Distance(this.gameObject.transform.position, player.transform.position);
         radiusSpeed = 1;
         thetaSpeed = 100f;
     }
@@ -23,10 +23,14 @@ public class Collectible : MonoBehaviour
         AbsorbedByPlayer();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter(Collision collision)
     {
+        
         if (collision.gameObject.tag == "Player")
+        {
+            Debug.Log("Collided with player");
             this.gameObject.SetActive(false);
+        }
     }
 
     private void AbsorbedByPlayer()
@@ -36,6 +40,6 @@ public class Collectible : MonoBehaviour
         theta = t * thetaSpeed;
         radius = t * radiusSpeed;
 
-        transform.position = new Vector2(radius * Mathf.Cos(Mathf.Deg2Rad * theta) + player.transform.position.x, radius * Mathf.Sin(Mathf.Deg2Rad * theta) + player.transform.position.y);
+        transform.position = new Vector3(radius * Mathf.Cos(Mathf.Deg2Rad * theta) + player.transform.position.x, radius * Mathf.Sin(Mathf.Deg2Rad * theta) + player.transform.position.y);
     }
 }
