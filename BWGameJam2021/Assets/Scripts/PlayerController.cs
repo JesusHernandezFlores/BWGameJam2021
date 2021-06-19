@@ -42,19 +42,23 @@ public class PlayerController : MonoBehaviour
         {
             GameController.gs = GameState.GravityWaves;
         }
-
-       if (Input.GetKeyDown(KeyCode.C) && GameController.gs != GameState.TimeWarp)
-       {
+        
+        //Checks if GameState is normal. Can only use on ability at a time (at least for now)
+        //
+        if (Input.GetKeyDown(KeyCode.C) && GameController.gs == GameState.Normal)
+        {
             StartCoroutine("WarpTime");
-       }
+        }
     }
 
+    //Change GameState to TimeWarp and reduce time scale to .1 for 5 seconds
+    //Revert time scale and GameState afterwards
     IEnumerator WarpTime()
     {
         GameController.gs = GameState.TimeWarp;
         Time.timeScale = .1f;
         yield return new WaitForSecondsRealtime(5);
         Time.timeScale = 1f;
-        GameController.gs = GameState.TimeWarp;
+        GameController.gs = GameState.Normal;
     }
 }
