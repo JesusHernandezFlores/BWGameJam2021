@@ -5,41 +5,45 @@ using UnityEngine;
 
 public class Object : MonoBehaviour
 {
-    private float radius;
-    [SerializeField] float radiusSpeed, theta, thetaSpeed;
+    private bool isOrbitingPlayer;
+    [SerializeField] private Transform center;
+    [SerializeField] private Vector3 axis = Vector3.up;
 
-    [SerializeField] private GameObject player;
+    [SerializeField] private float radius = 2.0f;
+    [SerializeField] private float radialSpeed = .5f;
+    [SerializeField] private float rotationalSpeed = 80.0f;
+
     // Start is called before the first frame update
     void Start()
     {
-        radius = Vector3.Distance(this.gameObject.transform.position, player.transform.position);
-        radiusSpeed = 1;
-        thetaSpeed = 100f;
+        isOrbitingPlayer = false;
+        //transform.position = (transform.position - center.position).normalized * radius + center.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        AbsorbedByPlayer();
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        
-        if (collision.gameObject.tag == "Player")
+        if ((GameController.gs == GameState.GravityWaves && (Vector3.Distance(center.position, transform.position) <= 10 && !isOrbitingPlayer)) || isOrbitingPlayer)
         {
-            Debug.Log("Collided with player");
-            this.gameObject.SetActive(false);
+            OrbitPlayer();
         }
     }
 
-    private void AbsorbedByPlayer()
+    private void OrbitPlayer()
     {
-        float t = 10 - ((Time.time * 2) % 10);
+        isOrbitingPlayer = true;
+        transform.RotateAround(center.position, axis, rotationalSpeed * Time.deltaTime);
+        Vector3 desiredPos = (transform.position - center.position).normalized * radius + center.position;
 
-        theta = t * thetaSpeed;
-        radius = t * radiusSpeed;
+        transform.position = Vector3.MoveTowards(transform.position, desiredPos, Time.deltaTime * radialSpeed);
+    }
 
-        transform.position = new Vector3(radius * Mathf.Cos(Mathf.Deg2Rad * theta) + player.transform.position.x, radius * Mathf.Sin(Mathf.Deg2Rad * theta) + player.transform.position.y);
+    private void OnCollisionEnter(Collision collision)
+    {   
+        if (collision.gameObject.tag == "bullet" && isOrbitingPlayer)
+        {
+            gameObject.SetActive(false);
+            isOrbitingPlayer = false;
+        }
     }
 }

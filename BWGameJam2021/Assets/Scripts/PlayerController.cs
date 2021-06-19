@@ -5,12 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float movementSpeed = 10;
-    Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -40,16 +38,23 @@ public class PlayerController : MonoBehaviour
             transform.Translate(-transform.right * movementSpeed * Time.unscaledDeltaTime);
         }
 
-        if (Input.GetKey(KeyCode.C))
+        if(Input.GetKeyDown(KeyCode.Q))
         {
-            StartCoroutine("WarpTime");
+            GameController.gs = GameState.GravityWaves;
         }
+
+       if (Input.GetKeyDown(KeyCode.C) && GameController.gs != GameState.TimeWarp)
+       {
+            StartCoroutine("WarpTime");
+       }
     }
 
     IEnumerator WarpTime()
     {
+        GameController.gs = GameState.TimeWarp;
         Time.timeScale = .1f;
         yield return new WaitForSecondsRealtime(5);
         Time.timeScale = 1f;
+        GameController.gs = GameState.TimeWarp;
     }
 }
