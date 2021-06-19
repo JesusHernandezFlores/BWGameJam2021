@@ -20,6 +20,8 @@
         [HDR] _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimAmount ("Rim Amoutn", Float) = 0.716
         _RimThreshold ("Rim Threshold", Float) = 0.1
+
+        
     }
     SubShader
     {
@@ -30,7 +32,7 @@
             "PassFlags" = "OnlyDirectional"
         }
         LOD 100
-
+        Cull Off
         Pass
         {
             CGPROGRAM
