@@ -23,6 +23,7 @@ public class Object : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //In english: (if GravityWaves in use and distance to player is <= 10 and is not orbiting the player) or (is currently orbiting player) call Orbit Player
         if ((GameController.gs == GameState.GravityWaves && (Vector3.Distance(center.position, transform.position) <= 10 && !isOrbitingPlayer)) || isOrbitingPlayer)
         {
             OrbitPlayer();
@@ -32,14 +33,18 @@ public class Object : MonoBehaviour
     private void OrbitPlayer()
     {
         isOrbitingPlayer = true;
-        transform.RotateAround(center.position, axis, rotationalSpeed * Time.deltaTime);
+        //Code for orbiting player.
+        //TODO: Make it so that multiple objects and orbits are supported. Maybe about 4?
+        transform.RotateAround(center.position, axis, rotationalSpeed * Time.unscaledDeltaTime);
         Vector3 desiredPos = (transform.position - center.position).normalized * radius + center.position;
 
-        transform.position = Vector3.MoveTowards(transform.position, desiredPos, Time.deltaTime * radialSpeed);
+        transform.position = Vector3.MoveTowards(transform.position, desiredPos, Time.unscaledDeltaTime * radialSpeed);
     }
 
     private void OnCollisionEnter(Collision collision)
     {   
+        //player will be dodging bullets or something else. If an object is shielding 
+        //the player and the bullet hits it, it is destroyed
         if (collision.gameObject.tag == "bullet" && isOrbitingPlayer)
         {
             gameObject.SetActive(false);
