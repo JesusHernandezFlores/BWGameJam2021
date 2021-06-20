@@ -14,7 +14,7 @@ public class Object : MonoBehaviour
     [SerializeField] private float rotationalSpeed = 80.0f;
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         isOrbitingPlayer = false;
         //transform.position = (transform.position - center.position).normalized * radius + center.position;
