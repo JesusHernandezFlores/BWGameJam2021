@@ -31,11 +31,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(transform.right * movementSpeed * Time.unscaledDeltaTime);
+            transform.Translate(-transform.right * movementSpeed * Time.unscaledDeltaTime);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(-transform.right * movementSpeed * Time.unscaledDeltaTime);
+            transform.Translate(transform.right * movementSpeed * Time.unscaledDeltaTime);
         }
 
         if(Input.GetKeyDown(KeyCode.Q))
@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
     {
         GameController.gs = GameState.TimeWarp;
         Time.timeScale = .1f;
+        Time.fixedDeltaTime = Time.timeScale * 0.02f;
         yield return new WaitForSecondsRealtime(5);
         Time.timeScale = 1f;
         GameController.gs = GameState.Normal;

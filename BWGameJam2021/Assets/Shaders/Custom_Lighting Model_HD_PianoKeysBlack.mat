@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_Lighting Model_HD_ToonShader
+  m_Name: Custom_Lighting Model_HD_PianoKeysBlack
   m_Shader: {fileID: 4800000, guid: bcacdba170cd04f13a8e41ab7232bd24, type: 3}
-  m_ShaderKeywords: SPEC_ON
+  m_ShaderKeywords: RIM_ON SPEC_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -28,10 +28,10 @@ Material:
     - _Glossiness: 3.36
     - _RimAmount: 0.35
     - _RimThreshold: 14.2
-    - _RimToggle: 0
+    - _RimToggle: 1
     - _SpecularToggle: 1
     m_Colors:
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 1}
-    - _PrimaryColor: {r: 1, g: 1, b: 1, a: 1}
+    - _PrimaryColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
