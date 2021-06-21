@@ -8,6 +8,8 @@ public class Object : MonoBehaviour
     private bool isOrbitingPlayer;
     [SerializeField] private Transform center;
     [SerializeField] private Vector3 axis = Vector3.up;
+    private Vector3 torque;
+    private Vector3 forward;
 
     [SerializeField] private float radius = 2.0f;
     [SerializeField] private float radialSpeed = .5f;
@@ -17,7 +19,11 @@ public class Object : MonoBehaviour
     void OnEnable()
     {
         isOrbitingPlayer = false;
-        //transform.position = (transform.position - center.position).normalized * radius + center.position;
+
+        torque.x = Random.Range(-50, 50);
+        torque.y = Random.Range(-50, 50);
+        torque.z = Random.Range(-50, 50);
+        GetComponent<ConstantForce>().torque = torque;
     }
 
     // Update is called once per frame
@@ -28,6 +34,8 @@ public class Object : MonoBehaviour
         {
             OrbitPlayer();
         }
+
+        transform.position += new Vector3(0.0f, 0.0f, -Random.Range(1, 3)) * Time.deltaTime;
     }
 
     private void OrbitPlayer()
