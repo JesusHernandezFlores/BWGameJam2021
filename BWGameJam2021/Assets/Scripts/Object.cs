@@ -9,7 +9,7 @@ public class Object : MonoBehaviour
     [SerializeField] private Transform center;
     [SerializeField] private Vector3 axis = Vector3.up;
     private Vector3 torque;
-    private Vector3 forward;
+    private float speed = 3;
 
     [SerializeField] private float radius = 2.0f;
     [SerializeField] private float radialSpeed = .5f;
@@ -19,7 +19,7 @@ public class Object : MonoBehaviour
     void OnEnable()
     {
         isOrbitingPlayer = false;
-
+        Debug.Log(isOrbitingPlayer);
         torque.x = Random.Range(-50, 50);
         torque.y = Random.Range(-50, 50);
         torque.z = Random.Range(-50, 50);
@@ -35,12 +35,13 @@ public class Object : MonoBehaviour
             OrbitPlayer();
         }
 
-        transform.position += new Vector3(0.0f, 0.0f, -Random.Range(1, 3)) * Time.deltaTime;
+        transform.position += new Vector3(0.0f, 0.0f, -Random.Range(1, 3)) * Time.deltaTime * speed;
     }
 
     private void OrbitPlayer()
     {
         isOrbitingPlayer = true;
+        Debug.Log(isOrbitingPlayer);
         //Code for orbiting player.
         //TODO: Make it so that multiple objects and orbits are supported. Maybe about 4?
         transform.RotateAround(center.position, axis, rotationalSpeed * Time.unscaledDeltaTime);
@@ -50,13 +51,10 @@ public class Object : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {   
+    {
         //player will be dodging bullets or something else. If an object is shielding 
         //the player and the bullet hits it, it is destroyed
-        if (collision.gameObject.tag == "bullet" && isOrbitingPlayer)
-        {
+        if (collision.gameObject.name == "BackWall" && !isOrbitingPlayer)
             gameObject.SetActive(false);
-            isOrbitingPlayer = false;
-        }
     }
 }

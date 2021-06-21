@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnPooledObject", 1f, 5f);
+        InvokeRepeating("SpawnPooledObject", 1f, 3f);
     }
 
     // Update is called once per frame
@@ -33,4 +33,5 @@ public class GameController : MonoBehaviour
     {
         
     }
+
 }

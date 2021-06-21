@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,9 +40,9 @@ public class PlayerController : MonoBehaviour
             transform.Translate(transform.right * movementSpeed * Time.unscaledDeltaTime);
         }
 
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(Input.GetKeyDown(KeyCode.Q) && GameController.gs == GameState.Normal)
         {
-            GameController.gs = GameState.GravityWaves;
+            StartCoroutine("SetGravityWaves");
         }
         
         //Checks if GameState is normal. Can only use on ability at a time (at least for now)
@@ -57,9 +59,24 @@ public class PlayerController : MonoBehaviour
     {
         GameController.gs = GameState.TimeWarp;
         Time.timeScale = .1f;
-        Time.fixedDeltaTime = Time.timeScale * 0.02f;
+        //Time.fixedDeltaTime = Time.timeScale * 0.02f;
         yield return new WaitForSecondsRealtime(5);
         Time.timeScale = 1f;
         GameController.gs = GameState.Normal;
+    }
+
+    IEnumerator SetGravityWaves()
+    {
+        GameController.gs = GameState.GravityWaves;
+        yield return new WaitForSecondsRealtime(1);
+        GameController.gs = GameState.Normal;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "object")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }
